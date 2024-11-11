@@ -63,6 +63,35 @@ app.post('/products/rangeprices/:id', async_wrapper(get_products_range_prices));
 //ENDPOINT TO SEARCH PRODUCTS
 app.post('/products/search', async_wrapper(get_products_search));
 
+// Agregar un producto a favoritos
+app.post('/favoritos', async (req, res) => {
+  const { id_usuario_favorito, id_producto_favorito } = req.body;
+  const query = `INSERT INTO favoritos (id_usuario_favorito, id_producto_favorito) VALUES (?, ?)`;
+  await connection.query(query, [id_usuario_favorito, id_producto_favorito]);
+  res.status(201).send('Producto agregado a favoritos');
+});
+
+// Eliminar un producto de favoritos
+app.delete('/favoritos', async (req, res) => {
+  const { id_usuario_favorito, id_producto_favorito } = req.body;
+  const query = `DELETE FROM favoritos WHERE id_usuario_favorito = ? AND id_producto_favorito = ?`;
+  await connection.query(query, [id_usuario_favorito, id_producto_favorito]);
+  res.status(200).send('Producto eliminado de favoritos');
+});
+
+// Obtener productos favoritos de un usuario
+app.get('/favoritos/:id_usuario', async (req, res) => {
+  const { id_usuario } = req.params;
+  const query = `
+    SELECT p.id_producto AS id, p.nombre_producto AS product, p.descripcion_producto AS description, 
+           p.costo_producto AS price, f.ruta_foto
+    FROM favoritos f
+    JOIN productos p ON f.id_producto_favorito = p.id_producto
+    WHERE f.id_usuario_favorito = ?`;
+  const [results] = await connection.query(query, [id_usuario]);
+  res.status(200).json(results);
+});
+
 // Configuración del servidor para escuchar en el puerto especificado en process.env.PORT 
 // o en el puerto 3000 por defecto, y muestra un mensaje en la consola al iniciar.
 const PORT = process.env.PORT || 3000;

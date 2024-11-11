@@ -1,11 +1,18 @@
 import { Card } from "react-bootstrap";
 import { FaRegEye, FaShoppingCart, FaHeart } from "react-icons/fa";
 
-const ProductCard = ({ product }) => {
+const ProductCard = ({ product, userId, onFavoriteToggle }) => {
+
+  // const [isFavorite, setIsFavorite] = useState(false);
+  // const handleFavoriteToggle = async () => {
+  //   await onFavoriteToggle(product.id);
+  //   setIsFavorite(!isFavorite);
+  // };
+
   // Verifica si la ruta de la imagen es válida y construye la ruta completa de la imagen
   const imagePath = product.ruta_foto && product.ruta_foto !== 'undefined' 
     ? `/photoProducts/${product.ruta_foto}`
-    : '/photoProducts/foto_trajes.jpg';
+    : '/photoProducts/foto_undefined.jpg';
 
   return (
     <Card style={{ width: "17rem", position: "relative", marginTop: "40px", marginRight: "20px", marginLeft: "20px" }}>
@@ -30,8 +37,10 @@ const ProductCard = ({ product }) => {
             transform: "translateY(-50%)",
             filter: "drop-shadow(2px 2px 2px black)",
           }}
-          color={"white"}
-          title="Añadir a favoritos"
+          color="white"
+          // color={isFavorite ? "red" : "white"}
+          // onClick={handleFavoriteToggle}
+          // title={isFavorite ? "Eliminar de Favoritos" : "Añadir a Favoritos"}
         />
       </Card.Body>
     </Card>

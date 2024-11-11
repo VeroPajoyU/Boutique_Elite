@@ -1,7 +1,9 @@
 // App.jsx
 import { useState, useEffect } from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom"; // Importa Router y Routes
 import Navigation from "./components/Navigation.jsx";
 import Products from "./components/Products.jsx";
+// import Favorites from "./components/Favorites.jsx"; // Importa el componente de favoritos
 import fetch_data from "./api/api_backend.jsx";
 
 function App() {
@@ -17,7 +19,8 @@ function App() {
   const [selectedColorsIds, setSelectedColorsIds] = useState([]);
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(100000);
-  // const [searchText, setSearchText] = useState('');
+  // const [favorites, setFavorites] = useState([]); // Estado para manejar los favoritos
+  const [searchText, setSearchText] = useState('');
 
   useEffect(() => {
     fetch_data("/products", setProducts);
@@ -72,13 +75,14 @@ function App() {
     }
   }, [minPrice, maxPrice]);
 
-  // useEffect(() => {
-  //   if (!searchText){
-  //     fetch_data("/products", setProducts);
-  //   } else {
-  //     fetch_data("/products/search" + searchText, setProducts);
-  //   }
-  // }, [searchText]);
+  useEffect(() => {
+    if (searchText==''){
+      fetch_data("/products", setProducts);
+    } else {
+      console.log(searchText)
+      fetch_data("/products/search", setProducts, { searchText }); // Enviar el texto de búsqueda en el cuerpo
+    }
+  }, [searchText]);
 
   const handleCategorySelect = (categoryId) => { setSelectedCategoryId(categoryId) };
   const handleMarkSelect = (markIds) => { setSelectedMarksIds(markIds) };
@@ -88,10 +92,11 @@ function App() {
     setMinPrice(min);
     setMaxPrice(max);
   };
-  const handleSearchChange = (searchText) => { setSearchText(searchText) };
+  // const handleFavoritesChange = (newFavorites) => { setFavorites(newFavorites); };
+  const handleSearchChange = (searchText) => { setSearchText(searchText); console.log('Handle: '+searchText) };
 
   return (
-    <>
+    <Router>
       <header className="sticky-top">
         <Navigation
           categories={categories}
@@ -100,20 +105,26 @@ function App() {
         />
       </header>
       <main>
-        <Products 
-          products={products}
-          marks={marks} 
-          sizes={sizes} 
-          colors={colors} 
-          prices={mmPrices}
-          onMarksSelect={handleMarkSelect} 
-          onSizesSelect={handleSizeSelect} 
-          onColorsSelect={handleColorSelect}
-          onPriceSelect={handlePriceSelect}
-          productsF={handleSearchChange} 
-        />
+        <Routes>
+          <Route path="/" element={
+            <Products 
+              products={products}
+              marks={marks} 
+              sizes={sizes} 
+              colors={colors} 
+              prices={mmPrices}
+              onMarksSelect={handleMarkSelect} 
+              onSizesSelect={handleSizeSelect} 
+              onColorsSelect={handleColorSelect} 
+              onPriceSelect={handlePriceSelect}
+              // onFavoritesChange={handleFavoritesChange} 
+              productsF={handleSearchChange} 
+            />
+          } />
+          {/* <Route path="/favoritos" element={<Favorites favorites={favorites} />} /> Ruta para la página de favoritos */}
+        </Routes>
       </main>
-    </>
+    </Router>
   );
 }
 

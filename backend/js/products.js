@@ -94,7 +94,7 @@ const get_products_minmax_prices = async () => {
             min(costo_producto) AS min_price, 
             max(costo_producto) AS max_price,
             ruta_foto
-        FROM productos
+        FROM productos p
         JOIN fotos f ON f.id_producto_foto = p.id_producto;`
     const [results] = await connection.query(query);
     
@@ -111,7 +111,7 @@ const get_products_range_prices = async (req, res, price) => {
             costo_producto AS price,
             cantidad_producto AS available_product,
             ruta_foto
-        FROM productos
+        FROM productos p
         JOIN fotos f ON f.id_producto_foto = p.id_producto
         WHERE costo_producto BETWEEN ${price[0]} AND ${price[1]};`
     const [results] = await connection.query(query);
@@ -119,7 +119,8 @@ const get_products_range_prices = async (req, res, price) => {
     return results;
 };
 
-const get_products_search = async (req, res, searchText) => {
+const get_products_search = async (req, res) => {
+    const { searchText } = req.body; // Obtener el texto de búsqueda del cuerpo de la solicitud
     const query = 
       `SELECT 
         id_producto AS id,
@@ -130,11 +131,11 @@ const get_products_search = async (req, res, searchText) => {
         ruta_foto
       FROM productos p
       JOIN fotos f ON f.id_producto_foto = p.id_producto
-      WHERE nombre_producto LIKE '%${searchText}%' OR descripcion_producto LIKE '%${searchText}%';`
+      WHERE nombre_producto LIKE '%${searchText}%';`
     const [results] = await connection.query(query);
     
     return results;
-  };
+};
 
 export { 
     get_products, 

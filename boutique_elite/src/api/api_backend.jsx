@@ -1,11 +1,12 @@
 const url = "http://localhost:3000";
 
-const fetch_data = async (endpoint, setState) => {
+const fetch_data = async (endpoint, setState, body = null) => {
   const result = await fetch(url + endpoint, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
+    body: body ? JSON.stringify(body) : null, // Enviar el cuerpo solo si hay datos
   });
   const { data } = await result.json();
   setState(data);

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Navbar, Nav, Form, FormControl, Button } from 'react-bootstrap';
 import { FaUser, FaShoppingCart, FaHeart } from "react-icons/fa";
+import { Link } from 'react-router-dom'; // Importa Link para la navegación
 import logo from "../assets/logo_white.png";
 
 function Navigation({ categories, onSearchChange, onCategorySelect }) {
@@ -47,7 +48,9 @@ function Navigation({ categories, onSearchChange, onCategorySelect }) {
           <div style={{ display: "flex", alignItems: "flex-start", filter: "drop-shadow(3px 1px 3px black)", padding: "10px"}}>
             <FaUser size={30} color="gray" title="Iniciar sesión" style={{ marginRight: "10px" }}/>
             <FaShoppingCart size={30} color="green" title="Añadir al carrito" style={{ marginRight: "10px" }}/>
-            <FaHeart size={30} color={"white"} title="Añadir a favoritos" style={{ marginRight: "10px" }}/>
+            {/* <Link to="/favoritos" style={{ marginRight: "10px" }}>
+              <FaHeart size={30} color={"white"} title="Ir a Favoritos" style={{ marginRight: "10px" }}/>
+            </Link> */}
           </div>
         </Form>
       </Navbar.Collapse>
