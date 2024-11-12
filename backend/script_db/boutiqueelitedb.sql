@@ -136,11 +136,9 @@ CREATE TABLE IF NOT EXISTS `usuarios` (
 
 INSERT INTO `usuarios` 
 (`id_usuario`, `login_usuario`, `nombre_usuario`, `email_usuario`, `celular_usuario`, `password_usuario`, `fecha_registro_usuario`, `id_rol_usuario`) VALUES
-('1', 'juanperez', 'Juan Pérez', 'juanperez@gmail.com', '3151234567', 'clavejuan123', NOW(), 2),
-('2', 'luisgomez', 'Luis Gómez', 'luisgomez@gmail.com', '3109876543', 'claveluis456', NOW(), 1),
-('3', 'mariagonzalez', 'María González', 'mariagonzalez@gmail.com', '3208765432', 'clavemaria789', NOW(), 1),
-('4', 'carlosruiz', 'Carlos Ruiz', 'carlosruiz@gmail.com', '3156543210', 'clavecarlos321', NOW(), 2),
-('5', 'anagonzalez', 'Ana González', 'anagonzalez@gmail.com', '3201234567', 'claveana654', NOW(), 2);
+('1', 'cristianmusse', 'Cristian Musse', 'cristianmusse@gmail.com', '3151234567', 'clavecristian', NOW(), 1),
+('2', 'veropajoy', 'Verónica Pajoy', 'veropajoy@gmail.com', '3109876543', 'clavevero', NOW(), 2),
+('3', 'danilocollazos', 'Danilo Collazos', 'danilocollazos@gmail.com', '3109876543', 'clavedanilo', NOW(), 2);
 
 ALTER TABLE `usuarios`
   ADD KEY (`id_rol_usuario`),
@@ -267,7 +265,7 @@ CREATE TABLE IF NOT EXISTS `carritos` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 INSERT INTO `carritos` (`id_usuario_carrito`, `id_producto_carrito`,`cantidadproducto_carrito`,`fecha_registro_carrito`) VALUES
-	('5',1,2,NOW());
+	('2',1,2,NOW());
     
 ALTER TABLE `carritos`
   ADD KEY (`id_usuario_carrito`),
@@ -288,7 +286,7 @@ CREATE TABLE IF NOT EXISTS `favoritos` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 INSERT INTO `favoritos` (`id_usuario_favorito`, `id_producto_favorito`) VALUES
-	('5',1);
+	('2',1),('3',2);
     
 ALTER TABLE `favoritos`
   ADD KEY (`id_usuario_favorito`),

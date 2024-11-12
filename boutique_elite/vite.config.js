@@ -16,6 +16,9 @@ export default defineConfig({
         serveStatic: [
           { route: '/assets', directory: './assets' }
         ]
+      },
+      proxy: {
+        '/api': 'http://localhost:3000',
       }
     }
   }

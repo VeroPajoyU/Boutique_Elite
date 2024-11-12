@@ -20,6 +20,8 @@ import {
   get_products_range_prices, 
   get_products_search 
 } from './js/products.js';
+import get_users_login from './js/users_login.js';
+import get_users_register from './js/users_register.js';
 
 // Crea una aplicación Express (app) y habilita CORS para permitir solicitudes desde diferentes orígenes. 
 // Configura la aplicación para que acepte datos JSON.
@@ -62,6 +64,12 @@ app.post('/products/rangeprices/:id', async_wrapper(get_products_range_prices));
 
 //ENDPOINT TO SEARCH PRODUCTS
 app.post('/products/search', async_wrapper(get_products_search));
+
+// ENDPOINT PARA INICIAR SESIÓN
+app.post('/api/login', async_wrapper(get_users_login));
+
+// ENDPOINT PARA REGISTRAR NUEVOS USUARIOS
+app.post('/api/register', async_wrapper(get_users_register));
 
 // Agregar un producto a favoritos
 app.post('/favoritos', async (req, res) => {
