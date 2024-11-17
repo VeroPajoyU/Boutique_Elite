@@ -65,7 +65,7 @@ function Navigation({ categories, onSearchChange, onCategorySelect }) {
                 {user ? (
                   <>
                     <span style={{ fontSize: "12px", color: "gray", fontWeight: "bold", textAlign: "center" }}>
-                      ¡Hola, {user?.nombre_usuario || 'Usuario'}!
+                      ¡Hola, {user ? user : 'Usuario'}!
                     </span>
                     <FaSignOutAlt
                       size={30}
