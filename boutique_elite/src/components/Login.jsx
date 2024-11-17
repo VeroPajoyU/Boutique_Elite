@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import fetch_data from '../api/api_backend.jsx';
 
 const Login = ({ show, handleClose, handleLogin }) => {
     const [login_usuario, setLoginUsuario] = useState('');
@@ -15,23 +16,16 @@ const Login = ({ show, handleClose, handleLogin }) => {
         e.preventDefault();
         setError('');
         try {
-            const response = await fetch('/api/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
+            await fetch_data(
+                '/login',
+                (user) => {
+                    handleLogin(user);
+                    handleClose();
                 },
-                body: JSON.stringify({ login_usuario, password_usuario }),
-            });
-
-            if (!response.ok) {
-                throw new Error('Credenciales incorrectas');
-            }
-
-            const user = await response.json();
-            handleLogin(user);
-            handleClose();
+                { login_usuario, password_usuario }
+            );
         } catch (err) {
-            setError(err.message);
+            setError('Credenciales incorrectas');
         }
     };
 
@@ -39,23 +33,16 @@ const Login = ({ show, handleClose, handleLogin }) => {
         e.preventDefault();
         setError('');
         try {
-            const response = await fetch('/api/register', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
+            await fetch_data(
+                '/register',
+                (user) => {
+                    handleLogin(user);
+                    handleClose();
                 },
-                body: JSON.stringify({ login_usuario, password_usuario, nombre_usuario, email_usuario }),
-            });
-
-            if (!response.ok) {
-                throw new Error('Error al registrarse');
-            }
-
-            const user = await response.json();
-            handleLogin(user);
-            handleClose();
+                { login_usuario, password_usuario, nombre_usuario, email_usuario }
+            );
         } catch (err) {
-            setError(err.message);
+            setError('Error al registrarse');
         }
     };
 
@@ -108,8 +95,8 @@ const Login = ({ show, handleClose, handleLogin }) => {
                             value={password_usuario}
                             onChange={(e) => setPasswordUsuario(e.target.value)}
                         />
-                        <div 
-                            onClick={() => setShowPassword(!showPassword)} 
+                        <div
+                            onClick={() => setShowPassword(!showPassword)}
                             style={{ position: 'absolute', top: '70%', right: '10px', cursor: 'pointer', transform: 'translateY(-50%)' }}
                         >
                             {showPassword ? <FaEyeSlash /> : <FaEye />}

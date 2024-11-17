@@ -20,7 +20,7 @@ const authenticateUser = async (login_usuario, password_usuario) => {
 
     // Retorna el usuario sin la contraseña
     const { password_usuario: userPassword, ...userWithoutPassword } = user;
-    return userWithoutPassword;
+    return userWithoutPassword.nombre_usuario;
 };
 
 // Registro de usuario

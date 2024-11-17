@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Navbar, Nav, Form, FormControl, Button } from 'react-bootstrap';
-import { FaUser, FaShoppingCart, FaHeart } from "react-icons/fa";
+import { FaUser, FaSignOutAlt, FaShoppingCart, FaHeart } from "react-icons/fa";
 import { Link } from 'react-router-dom'; // Importa Link para la navegación
 import logo from "../assets/logo_white.png";
 import Login from './Login';
@@ -21,9 +21,15 @@ function Navigation({ categories, onSearchChange, onCategorySelect }) {
   };
 
   const handleLogin = (user) => {
-    setUser (user); // Almacena el user autenticado
+    setUser (user); // Guarda los datos del usuario autenticado
+    console.log('[INFO] Usuario iniciado sesión:', user);
     setShowLogin(false); // Cierra el modal
   }
+
+  const handleLogout = () => {
+    setUser(null); // Borra el usuario autenticado
+    console.log('[INFO] Usuario cerrado sesión');
+  };
 
   return (
     <>
@@ -54,14 +60,31 @@ function Navigation({ categories, onSearchChange, onCategorySelect }) {
               onChange={(e) => setSearchText(e.target.value)}
             />
             <Button variant="outline-success" type="submit">Buscar</Button>
-            <div style={{ display: "flex", alignItems: "flex-start", filter: "drop-shadow(3px 1px 3px black)", padding: "10px"}}>
-              <FaUser  
-                size={30} 
-                color="gray" 
-                title="Iniciar sesión" 
-                style={{ marginRight: "10px", cursor: "pointer" }} 
-                onClick={() => setShowLogin(true)} // Abre el modal de inicio de sesión
-              />
+            <div style={{ display: "flex", alignItems: "center", padding: "10px" }}>
+              <div style={{ position: "relative", marginRight: "10px" }}>
+                {user ? (
+                  <FaSignOutAlt
+                    size={30}
+                    color="red"
+                    title="Cerrar sesión"
+                    style={{ cursor: "pointer" }}
+                    onClick={handleLogout} // Llama a la función de cierre de sesión
+                  />
+                ) : (
+                  <FaUser
+                    size={30}
+                    color="gray"
+                    title="Iniciar sesión"
+                    style={{ cursor: "pointer" }}
+                    onClick={() => setShowLogin(true)} // Abre el modal de login
+                  />
+                )}
+                {user && ( 
+                  <span style={{ position: "absolute", top: "35px", fontSize: "12px", color: "gray" }}> 
+                    {user} {/* Muestra el nombre del usuario */}
+                  </span> 
+                )}
+              </div>
               <FaShoppingCart 
                 size={30} 
                 color="green" 

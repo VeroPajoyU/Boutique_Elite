@@ -66,10 +66,10 @@ app.post('/products/rangeprices/:id', async_wrapper(get_products_range_prices));
 app.post('/products/search', async_wrapper(get_products_search));
 
 // ENDPOINT PARA INICIAR SESIÓN
-app.post('/api/login', async_wrapper(get_users_login));
+app.post('/login', async_wrapper(get_users_login));
 
 // ENDPOINT PARA REGISTRAR NUEVOS USUARIOS
-app.post('/api/register', async_wrapper(get_users_register));
+app.post('/register', async_wrapper(get_users_register));
 
 // Agregar un producto a favoritos
 app.post('/favoritos', async (req, res) => {
