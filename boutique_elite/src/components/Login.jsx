@@ -8,6 +8,7 @@ const Login = ({ show, handleClose, handleLogin }) => {
     const [password_usuario, setPasswordUsuario] = useState('');
     const [nombre_usuario, setNombreUsuario] = useState('');
     const [email_usuario, setEmailUsuario] = useState('');
+    const [celular_usuario, setCelularUsuario] = useState('');
     const [isRegistering, setIsRegistering] = useState(false);
     const [error, setError] = useState('');
     const [showPassword, setShowPassword] = useState(false);
@@ -39,7 +40,7 @@ const Login = ({ show, handleClose, handleLogin }) => {
                     handleLogin(user);
                     handleClose();
                 },
-                { login_usuario, password_usuario, nombre_usuario, email_usuario }
+                { login_usuario, password_usuario, nombre_usuario, email_usuario, celular_usuario }
             );
         } catch (err) {
             setError('Error al registrarse');
@@ -74,6 +75,15 @@ const Login = ({ show, handleClose, handleLogin }) => {
                                     placeholder="Ingresa tu email"
                                     value={email_usuario}
                                     onChange={(e) => setEmailUsuario(e.target.value)}
+                                />
+                            </Form.Group>
+                            <Form.Group controlId="formCelularUsuario" className="mb-3">
+                                <Form.Label>Número de Celular</Form.Label>
+                                <Form.Control
+                                    type="number"
+                                    placeholder="Ingresa tu celular"
+                                    value={celular_usuario}
+                                    onChange={(e) => setCelularUsuario(e.target.value)}
                                 />
                             </Form.Group>
                         </>

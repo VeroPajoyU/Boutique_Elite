@@ -23,14 +23,16 @@ const authenticateUser = async (login_usuario, password_usuario) => {
     return userWithoutPassword.nombre_usuario;
 };
 
-// Registro de usuario
-const registerUser = async (login_usuario, password_usuario, nombre_usuario, email_usuario) => {
+// Registro de usuario con Valor predeterminado para usuarios estándar = 2
+const registerUser = async (login_usuario, nombre_usuario, email_usuario, celular_usuario, password_usuario, id_rol_usuario = 2) => {
     const hashedPassword = await bcrypt.hash(password_usuario, 10);
-    const query = `INSERT INTO usuarios (login_usuario, password_usuario, nombre_usuario, email_usuario) VALUES (?, ?, ?, ?)`;
-    const [result] = await connection.query(query, [login_usuario, hashedPassword, nombre_usuario, email_usuario]);
 
-    // Retorna el nuevo usuario (sin la contraseña)
-    return { login_usuario, nombre_usuario, email_usuario };
+    // Agregamos el campo `id_rol_usuario` con valor predeterminado 2
+    const query = `INSERT INTO usuarios (login_usuario, nombre_usuario, email_usuario, celular_usuario, password_usuario, id_rol_usuario) VALUES (?, ?, ?, ?, ?, ?)`;
+    const [result] = await connection.query(query, [login_usuario, nombre_usuario, email_usuario, celular_usuario, hashedPassword, id_rol_usuario]);
+
+    // Aseguramos que solo se retornen datos serializables
+    return { login_usuario, nombre_usuario, email_usuario, celular_usuario, id_rol_usuario };
 };
 
 export {

@@ -61,15 +61,20 @@ function Navigation({ categories, onSearchChange, onCategorySelect }) {
             />
             <Button variant="outline-success" type="submit">Buscar</Button>
             <div style={{ display: "flex", alignItems: "center", padding: "10px" }}>
-              <div style={{ position: "relative", marginRight: "10px" }}>
+              <div style={{ display: "flex", alignItems: "center", marginRight: "10px" }}>
                 {user ? (
-                  <FaSignOutAlt
-                    size={30}
-                    color="red"
-                    title="Cerrar sesión"
-                    style={{ cursor: "pointer" }}
-                    onClick={handleLogout} // Llama a la función de cierre de sesión
-                  />
+                  <>
+                    <span style={{ fontSize: "12px", color: "gray", fontWeight: "bold", textAlign: "center" }}>
+                      ¡Hola, {user?.nombre_usuario || 'Usuario'}!
+                    </span>
+                    <FaSignOutAlt
+                      size={30}
+                      color="red"
+                      title="Cerrar sesión"
+                      style={{ cursor: "pointer" }}
+                      onClick={handleLogout} // Llama a la función de cierre de sesión
+                    />
+                  </>
                 ) : (
                   <FaUser
                     size={30}
@@ -78,11 +83,6 @@ function Navigation({ categories, onSearchChange, onCategorySelect }) {
                     style={{ cursor: "pointer" }}
                     onClick={() => setShowLogin(true)} // Abre el modal de login
                   />
-                )}
-                {user && ( 
-                  <span style={{ position: "absolute", top: "35px", fontSize: "12px", color: "gray" }}> 
-                    {user} {/* Muestra el nombre del usuario */}
-                  </span> 
                 )}
               </div>
               <FaShoppingCart 
