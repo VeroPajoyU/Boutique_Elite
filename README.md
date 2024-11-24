@@ -16,5 +16,3 @@ Para ver el projecto, se debe instalar lo siguiente:
 Buscar el archivo ..\Boutique_Elite\backend\script_db para ejecutar el script de la base de datos, 
 asegurarse de crear un usuario en workbench con el mismo nombre y pass que esta en el 
 archivo ..\Boutique_Elite\backend\js\database.
-
-Hola
