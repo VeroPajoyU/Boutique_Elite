@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Navbar, Nav, Form, FormControl, Button } from 'react-bootstrap';
 import { FaUser, FaSignOutAlt, FaShoppingCart, FaHeart } from "react-icons/fa";
-import { Link, useNavigate } from 'react-router-dom'; // Cambiado useHistory por useNavigate
+import { useNavigate } from 'react-router-dom'; // Para redirigir a rutas
+import axios from 'axios'; // Para manejar peticiones HTTP
 import logo from "../assets/logo_white.png";
 import Login from './Login';
 
@@ -10,7 +11,21 @@ function Navigation({ categories, onSearchChange, onCategorySelect }) {
   const [selectedCategory, setSelectedCategory] = useState('');
   const [showLogin, setShowLogin] = useState(false); // Estado para manejar el modal de login
   const [user, setUser] = useState(null); // Estado para almacenar el usuario autenticado
+  const [cartCount, setCartCount] = useState(0); // Estado para manejar el contador del carrito
   const navigate = useNavigate(); // Para redirigir a diferentes rutas
+
+
+  const fetchCartCount = async (userId) => {
+    try {
+      const response = await axios.get(`/cart/${userId}`);
+      const cartItems = Array.isArray(response.data) ? response.data : [];
+      const totalItems = cartItems.reduce((total, item) => total + item.cantidadproducto_carrito, 0);
+      setCartCount(totalItems);
+    } catch (error) {
+      console.error('Error al obtener los datos del carrito:', error);
+      setCartCount(0); // Resetea el contador en caso de error
+    }
+  };
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -23,27 +38,21 @@ function Navigation({ categories, onSearchChange, onCategorySelect }) {
 
   const handleLogin = (user) => {
     setUser(user); // Guarda los datos del usuario autenticado
-    console.log('[INFO] Usuario iniciado sesión:', user);
     setShowLogin(false); // Cierra el modal
   };
 
   const handleLogout = () => {
     setUser(null); // Borra el usuario autenticado
     localStorage.removeItem("authToken"); // Limpia token si es utilizado
+    setCartCount(0); // Resetea el carrito
     console.log('[INFO] Usuario cerró sesión');
   };
 
-  const handleFavoritesClick = () => {
+  const handleCartClick = () => {
     if (!user) {
       setShowLogin(true); // Si no está logueado, muestra el modal de login
     } else {
-      navigate("/favoritos"); // Si está logueado, redirige a favoritos
-    }
-  };
-
-  const handleAddToFavorites = () => {
-    if (!user) {
-      setShowLogin(true); // Si no está logueado, muestra el modal de login
+      navigate("/carrito"); // Si está logueado, redirige al carrito
     }
   };
 
@@ -76,35 +85,55 @@ function Navigation({ categories, onSearchChange, onCategorySelect }) {
               onChange={(e) => setSearchText(e.target.value)}
             />
             <Button variant="outline-success" type="submit">Buscar</Button>
-            <div style={{ display: "flex", alignItems: "center", padding: "10px" }}>
-              <div style={{ display: "flex", alignItems: "center", marginRight: "10px" }}>
-                {user ? (
-                  <>
-                    <span style={{ fontSize: "12px", color: "gray", fontWeight: "bold", textAlign: "center" }}>
-                      ¡Hola, {user ? user : 'Usuario'}!
-                    </span>
-                    <FaSignOutAlt
-                      size={30}
-                      color="red"
-                      title="Cerrar sesión"
-                      style={{ cursor: "pointer" }}
-                      onClick={handleLogout} // Llama a la función de cierre de sesión
-                    />
-                  </>
-                ) : (
-                  <FaUser
-                    size={30}
-                    color="gray"
-                    title="Iniciar sesión"
-                    style={{ cursor: "pointer" }}
-                    onClick={() => setShowLogin(true)} // Abre el modal de login
-                  />
-                )}
-              </div>
-              <FaShoppingCart size={30} color="green" title="Añadir al carrito" style={{ marginRight: "10px" }} />
-              <FaHeart size={30} color="red" title="Ir a Favoritos" onClick={handleFavoritesClick} />
-            </div>
           </Form>
+          <div style={{ display: "flex", alignItems: "center", padding: "10px" }}>
+            {user ? (
+              <>
+                <span style={{ fontSize: "12px", color: "gray", fontWeight: "bold", textAlign: "center" }}>
+                  ¡Hola, {user.name}!
+                </span>
+                <FaSignOutAlt
+                  size={30}
+                  color="red"
+                  title="Cerrar sesión"
+                  style={{ cursor: "pointer", marginLeft: "10px" }}
+                  onClick={handleLogout}
+                />
+              </>
+            ) : (
+              <FaUser
+                size={30}
+                color="gray"
+                title="Iniciar sesión"
+                style={{ cursor: "pointer", marginRight: "10px" }}
+                onClick={() => setShowLogin(true)} // Abre el modal de login
+              />
+            )}
+            <div style={{ position: 'relative', cursor: 'pointer', marginLeft: '20px' }}>
+              <FaShoppingCart
+                size={30}
+                color="green"
+                title="Ver carrito"
+                onClick={handleCartClick}
+              />
+              {cartCount > 0 && (
+                <span style={{
+                  position: 'absolute',
+                  top: '-5px',
+                  right: '-10px',
+                  background: 'red',
+                  color: 'white',
+                  borderRadius: '50%',
+                  padding: '5px 10px',
+                  fontSize: '12px',
+                  fontWeight: 'bold'
+                }}>
+                  {cartCount}
+                </span>
+              )}
+            </div>
+            <FaHeart size={30} color="red" title="Ir a Favoritos" style={{ marginLeft: '20px' }} />
+          </div>
         </Navbar.Collapse>
       </Navbar>
       <Login show={showLogin} handleClose={() => setShowLogin(false)} handleLogin={handleLogin} />
