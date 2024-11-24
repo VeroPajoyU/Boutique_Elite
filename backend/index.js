@@ -23,6 +23,7 @@ import {
 import get_users_login from './js/users_login.js';
 import get_users_register from './js/users_register.js';
 import { add_favorite, remove_favorite, get_favorites_by_user } from './js/favorites.js';
+import {add_to_cart, get_cart_by_user, update_cart_item, delete_cart_item} from './js/cart.js';
 
 // Crea una aplicación Express (app) y habilita CORS para permitir solicitudes desde diferentes orígenes. 
 // Configura la aplicación para que acepte datos JSON.
@@ -80,6 +81,19 @@ app.delete('/favoritos', async_wrapper(remove_favorite));
 
 //ENDPOINT TO FAVORITES BY USER
 app.get('/favoritos/:id_usuario', async_wrapper(get_favorites_by_user));
+
+// ENDPOINT PARA AÑADIR AL CARRITO
+app.post('/cart', add_to_cart);
+
+// ENDPOINT PARA OBTENER EL CARRITO DE UN USUARIO
+app.get('/cart/:id_usuario', get_cart_by_user);
+
+// ENDPOINT PARA ACTUALIZAR LA CANTIDAD DE UN PRODUCTO EN EL CARRITO
+app.put('/cart', update_cart_item);
+
+// ENDPOINT PARA ELIMINAR UN PRODUCTO DEL CARRITO
+app.delete('/cart/:id_usuario/:id_producto', delete_cart_item);
+
 
 // Configuración del servidor para escuchar en el puerto especificado en process.env.PORT 
 // o en el puerto 3000 por defecto, y muestra un mensaje en la consola al iniciar.
