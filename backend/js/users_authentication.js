@@ -35,7 +35,4 @@ const registerUser = async (login_usuario, nombre_usuario, email_usuario, celula
     return { login_usuario, nombre_usuario, email_usuario, celular_usuario, id_rol_usuario };
 };
 
-export {
-    authenticateUser,
-    registerUser
-};
+export { authenticateUser, registerUser };

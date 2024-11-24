@@ -1,15 +1,16 @@
 import { useState } from 'react';
 import { Navbar, Nav, Form, FormControl, Button } from 'react-bootstrap';
 import { FaUser, FaSignOutAlt, FaShoppingCart, FaHeart } from "react-icons/fa";
-import { Link } from 'react-router-dom'; // Importa Link para la navegación
+import { Link, useNavigate } from 'react-router-dom'; // Cambiado useHistory por useNavigate
 import logo from "../assets/logo_white.png";
 import Login from './Login';
 
 function Navigation({ categories, onSearchChange, onCategorySelect }) {
   const [searchText, setSearchText] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
-  const [showLogin, setShowLogin] = useState(false); // Estado para manejar el modal de inicio de sesión 
+  const [showLogin, setShowLogin] = useState(false); // Estado para manejar el modal de login
   const [user, setUser] = useState(null); // Estado para almacenar el usuario autenticado
+  const navigate = useNavigate(); // Para redirigir a diferentes rutas
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -21,14 +22,29 @@ function Navigation({ categories, onSearchChange, onCategorySelect }) {
   };
 
   const handleLogin = (user) => {
-    setUser (user); // Guarda los datos del usuario autenticado
+    setUser(user); // Guarda los datos del usuario autenticado
     console.log('[INFO] Usuario iniciado sesión:', user);
     setShowLogin(false); // Cierra el modal
-  }
+  };
 
   const handleLogout = () => {
     setUser(null); // Borra el usuario autenticado
-    console.log('[INFO] Usuario cerrado sesión');
+    localStorage.removeItem("authToken"); // Limpia token si es utilizado
+    console.log('[INFO] Usuario cerró sesión');
+  };
+
+  const handleFavoritesClick = () => {
+    if (!user) {
+      setShowLogin(true); // Si no está logueado, muestra el modal de login
+    } else {
+      navigate("/favoritos"); // Si está logueado, redirige a favoritos
+    }
+  };
+
+  const handleAddToFavorites = () => {
+    if (!user) {
+      setShowLogin(true); // Si no está logueado, muestra el modal de login
+    }
   };
 
   return (
@@ -85,15 +101,8 @@ function Navigation({ categories, onSearchChange, onCategorySelect }) {
                   />
                 )}
               </div>
-              <FaShoppingCart 
-                size={30} 
-                color="green" 
-                title="Añadir al carrito" 
-                style={{ marginRight: "10px" }}
-              />
-              {/* <Link to="/favoritos" style={{ marginRight: "10px" }}>
-                <FaHeart size={30} color={"white"} title="Ir a Favoritos" style={{ marginRight: "10px" }}/>
-              </Link> */}
+              <FaShoppingCart size={30} color="green" title="Añadir al carrito" style={{ marginRight: "10px" }} />
+              <FaHeart size={30} color="red" title="Ir a Favoritos" onClick={handleFavoritesClick} />
             </div>
           </Form>
         </Navbar.Collapse>
