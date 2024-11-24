@@ -3,7 +3,7 @@ import { Card } from "react-bootstrap";
 import { FaRegEye, FaShoppingCart, FaHeart } from "react-icons/fa";
 import fetch_data from "../api/api_backend.jsx";
 
-const ProductCard = ({ product, userId, onFavoriteToggle }) => {
+const ProductCard = ({ product, userId, onFavoriteToggle, onCartUpdate }) => {
   const [isFavorite, setIsFavorite] = useState(false);
 
   // Comprueba si el producto ya está en favoritos para este usuario
@@ -61,10 +61,42 @@ const ProductCard = ({ product, userId, onFavoriteToggle }) => {
     }
   };
 
+  // Añade un producto al carrito
+  const handleAddToCart = async () => {
+    if (!userId) {
+      alert("Por favor, inicia sesión para agregar productos al carrito.");
+      return;
+    }
+
+    const body = {
+      id_usuario: userId,
+      id_producto: product.id,
+      cantidad: 1, // Cantidad predeterminada: 1
+    };
+
+    try {
+      fetch_data(
+        "/cart",
+        (result) => {
+          if (result && result.message === "Producto añadido al carrito.") {
+            alert("Producto añadido al carrito.");
+            onCartUpdate(); // Notifica al componente padre para actualizar el contador del carrito
+          } else {
+            console.error("[ERROR] No se pudo añadir el producto al carrito.");
+          }
+        },
+        body,
+        (error) => console.error("[ERROR] Error al añadir producto al carrito:", error)
+      );
+    } catch (error) {
+      console.error("[ERROR] Error en la operación de añadir al carrito:", error);
+    }
+  };
+
   // Verifica si la ruta de la imagen es válida y construye la ruta completa de la imagen
-  const imagePath = product.ruta_foto && product.ruta_foto !== 'undefined' 
+  const imagePath = product.ruta_foto && product.ruta_foto !== "undefined" 
     ? `/photoProducts/${product.ruta_foto}`
-    : '/photoProducts/foto_undefined.jpg';
+    : "/photoProducts/foto_undefined.jpg";
 
   return (
     <Card style={{ width: "17rem", position: "relative", marginTop: "40px", marginRight: "20px", marginLeft: "20px" }}>
@@ -77,7 +109,7 @@ const ProductCard = ({ product, userId, onFavoriteToggle }) => {
           <h2 className="d-flex align-items-center">${product.price}</h2>
           <div style={{ display: "flex", alignItems: "flex-end" }}>
             <FaRegEye size={35} color="black" title="Ver detalle" className="me-3" />
-            <FaShoppingCart size={35} color="green" title="Añadir al carrito" />
+            <FaShoppingCart size={35} color="green" title="Añadir al carrito" onClick={handleAddToCart} />
           </div>
         </section>
         <FaHeart
