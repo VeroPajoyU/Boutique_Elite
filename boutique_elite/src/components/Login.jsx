@@ -19,8 +19,8 @@ const Login = ({ show, handleClose, handleLogin }) => {
         try {
             await fetch_data(
                 '/login',
-                (user) => {
-                    handleLogin(user);
+                (data) => {
+                    handleLogin(data);
                     handleClose();
                 },
                 { login_usuario, password_usuario }

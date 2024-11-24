@@ -22,6 +22,7 @@ import {
 } from './js/products.js';
 import get_users_login from './js/users_login.js';
 import get_users_register from './js/users_register.js';
+import { verifyToken } from './js/token_authentication.js';
 import { add_favorite, remove_favorite, get_favorites_by_user } from './js/favorites.js';
 
 // Crea una aplicación Express (app) y habilita CORS para permitir solicitudes desde diferentes orígenes. 
@@ -71,6 +72,9 @@ app.post('/login', async_wrapper(get_users_login));
 
 // ENDPOINT TO USERS REGISTER
 app.post('/register', async_wrapper(get_users_register));
+
+// ENDPOINT TO TOKEN AUTHEHTICATION
+app.post('/authT',  async_wrapper(verifyToken));
 
 //ENDPOINT TO ADD FAVORITE
 app.post('/favoritos', async_wrapper(add_favorite));

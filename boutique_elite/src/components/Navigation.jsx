@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Navbar, Nav, Form, FormControl, Button } from 'react-bootstrap';
 import { FaUser, FaSignOutAlt, FaShoppingCart, FaHeart } from "react-icons/fa";
-import { Link, useNavigate } from 'react-router-dom'; // Cambiado useHistory por useNavigate
+import { useNavigate } from 'react-router-dom'; // Cambiado useHistory por useNavigate
 import logo from "../assets/logo_white.png";
 import Login from './Login';
+import fetch_data from '../api/api_backend';
 
 function Navigation({ categories, onSearchChange, onCategorySelect }) {
   const [searchText, setSearchText] = useState('');
@@ -21,15 +22,17 @@ function Navigation({ categories, onSearchChange, onCategorySelect }) {
     onCategorySelect(categoryId);
   };
 
-  const handleLogin = (user) => {
-    setUser(user); // Guarda los datos del usuario autenticado
+  const handleLogin = (data) => {
+    setUser(data.user); // Guarda los datos del usuario autenticado
     console.log('[INFO] Usuario iniciado sesión:', user);
+    localStorage.setItem('token', data.token); // Guarda el token en el almacenamiento local
+    console.log('[INFO] Token almacenado:', data.token);
     setShowLogin(false); // Cierra el modal
   };
 
   const handleLogout = () => {
     setUser(null); // Borra el usuario autenticado
-    localStorage.removeItem("authToken"); // Limpia token si es utilizado
+    localStorage.removeItem('token'); // Borra el token del almacenamiento local
     console.log('[INFO] Usuario cerró sesión');
   };
 
@@ -41,11 +44,25 @@ function Navigation({ categories, onSearchChange, onCategorySelect }) {
     }
   };
 
-  const handleAddToFavorites = () => {
-    if (!user) {
-      setShowLogin(true); // Si no está logueado, muestra el modal de login
+  // Verifica si hay un token almacenado en el almacenamiento local y si es válido
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      fetch_data(
+        '/authT',
+        (data) => {
+          setUser(data.user); // Guarda los datos del usuario autenticado
+          console.log('[INFO] Usuario autenticado:', data.user);
+        },
+        { token }
+      ).catch((err) => {
+        console.error('[ERROR] Token inválido:', err);
+        localStorage.removeItem('token'); // Borra el token del almacenamiento local
+      })
+    } else {
+      console.log('[INFO] No hay token almacenado');
     }
-  };
+  }, []);
 
   return (
     <>
