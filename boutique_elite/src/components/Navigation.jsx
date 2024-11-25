@@ -29,6 +29,7 @@ function Navigation({ categories, onSearchChange, onCategorySelect, loginState }
     console.log('[INFO] Token almacenado:', data.token);
     setShowLogin(false); // Cierra el modal
     loginState(true); // Cambia el estado de login
+    window.location.reload(); // Recarga la página
   };
 
   const handleLogout = () => {
@@ -49,7 +50,7 @@ function Navigation({ categories, onSearchChange, onCategorySelect, loginState }
   // Verifica si hay un token almacenado en el almacenamiento local y si es válido
   useEffect(() => {
     const token = localStorage.getItem('token');
-    if (token) {
+    if (token && loginState) {
       fetch_data(
         '/authT',
         (data) => {
@@ -61,14 +62,16 @@ function Navigation({ categories, onSearchChange, onCategorySelect, loginState }
         { token }
       ).catch((err) => {
         console.error('[ERROR] Token inválido:', err);
+        setUser(null); // Borra el usuario autenticado
         localStorage.removeItem('token'); // Borra el token del almacenamiento local
         loginState(false); // Cambia el estado de login
       })
     } else {
       console.log('[INFO] No hay token almacenado');
+      setUser(null); // Borra el usuario autenticado
       loginState(false); // Cambia el estado de login
     }
-  }, [setUser]);
+  },[setUser]);
 
   return (
     <>
