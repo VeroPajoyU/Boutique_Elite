@@ -94,8 +94,8 @@ function App() {
     setMaxPrice(max);
   };
   // const handleFavoritesChange = (newFavorites) => { setFavorites(newFavorites); };
-  const handleSearchChange = (searchText) => { setSearchText(searchText); console.log('Handle: '+searchText) };
-  const handleUserLogin = (login) => { setUserLogin(login);};
+  const handleSearchChange = (searchText) => { setSearchText(searchText); };
+  const handleUserLogin = (login) => { setUserLogin(login); };
 
   return (
     <Router>
@@ -104,7 +104,7 @@ function App() {
           categories={categories}
           onSearchChange={handleSearchChange}
           onCategorySelect={handleCategorySelect}
-          loginState={userLogin}
+          loginState={handleUserLogin}
         />
       </header>
       <main>
@@ -116,12 +116,12 @@ function App() {
               sizes={sizes} 
               colors={colors} 
               prices={mmPrices}
+              loginState={userLogin}
               onMarksSelect={handleMarkSelect} 
               onSizesSelect={handleSizeSelect} 
               onColorsSelect={handleColorSelect} 
               onPriceSelect={handlePriceSelect}
-              // onFavoritesChange={handleFavoritesChange} 
-              productsF={handleSearchChange} 
+              onLoginState={handleUserLogin}
             />
           } />
           {/* <Route path="/favoritos" element={<Favorites favorites={favorites} />} /> Ruta para la página de favoritos */}

@@ -22,7 +22,7 @@ const authenticateUser = async (login_usuario, password_usuario) => {
 
     // Retorna el usuario sin la contraseña
     const { password_usuario: userPassword, ...userWithoutPassword } = user;
-    return userWithoutPassword.nombre_usuario;
+    return userWithoutPassword;
 };
 
 // Registro de usuario con Valor predeterminado para usuarios estándar = 2

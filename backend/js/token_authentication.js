@@ -7,7 +7,10 @@ const SECRET_KEY = KEY;
 // This function generates a token with the user's data
 const generateToken = (user) => {
     return jwt.sign(
-        { nombre_usuario: user.nombre_usuario }, // Pasa un objeto con los datos del usuario
+        {
+            id_usuario: user.id_usuario,
+            nombre_usuario: user.nombre_usuario
+        }, // Pasa un objeto con los datos del usuario
         SECRET_KEY,
         {
             expiresIn: '1h'
@@ -21,7 +24,7 @@ const verifyToken = (req) => {
     try {
         const result = jwt.verify(token, SECRET_KEY);
         console.log(result);
-        return { user: result.nombre_usuario }; // Retorna un objeto con los datos del usuario
+        return { id: result.id_usuario, name: result.nombre_usuario }; // Retorna un objeto con los datos del usuario
     } catch (error) {
         console.error('Token verification failed:', error.message);
         throw new Error('Invalid Token');

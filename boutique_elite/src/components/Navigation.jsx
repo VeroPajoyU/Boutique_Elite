@@ -23,7 +23,7 @@ function Navigation({ categories, onSearchChange, onCategorySelect, loginState }
   };
 
   const handleLogin = (data) => {
-    setUser(data.user); // Guarda los datos del usuario autenticado
+    setUser(data.name); // Guarda los datos del usuario autenticado
     console.log('[INFO] Usuario iniciado sesión:', user);
     localStorage.setItem('token', data.token); // Guarda el token en el almacenamiento local
     console.log('[INFO] Token almacenado:', data.token);
@@ -53,8 +53,9 @@ function Navigation({ categories, onSearchChange, onCategorySelect, loginState }
       fetch_data(
         '/authT',
         (data) => {
-          setUser(data.user); // Guarda los datos del usuario autenticado
-          console.log('[INFO] Usuario autenticado:', data.user);
+          setUser(data.name); // Guarda los datos del usuario autenticado
+          console.log('[INFO] Usuario autenticado:', data.name);
+          console.log('[INFO] Usuario autenticado:', data.id);
           loginState(true); // Cambia el estado de login
         },
         { token }
@@ -67,7 +68,7 @@ function Navigation({ categories, onSearchChange, onCategorySelect, loginState }
       console.log('[INFO] No hay token almacenado');
       loginState(false); // Cambia el estado de login
     }
-  }, []);
+  }, [setUser]);
 
   return (
     <>

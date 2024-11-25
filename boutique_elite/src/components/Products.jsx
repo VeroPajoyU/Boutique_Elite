@@ -7,7 +7,7 @@ import ColorsFilter from './ColorsFilter';
 import PriceFilter from "./PriceFilter";
 import logo from "../assets/logo_white.png";
 
-function Products({ products, marks, sizes, colors, prices, onMarksSelect, onSizesSelect, onColorsSelect, onPriceSelect }) {
+function Products({ products, marks, sizes, colors, prices, loginState, onMarksSelect, onSizesSelect, onColorsSelect, onPriceSelect, onLoginState }) {
   const [selectedMarksIds, setSelectedMarksIds] = useState([]);
   const [selectedSizesIds, setSelectedSizesIds] = useState([]);
   const [selectedColorsIds, setSelectedColorsIds] = useState([]);
@@ -60,7 +60,12 @@ function Products({ products, marks, sizes, colors, prices, onMarksSelect, onSiz
               <hr />
               <section className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-3 row-cols-xl-3 g-3">
                 {products.map((product, index) => (
-                  <ProductCard key={index} product={product} />
+                  <ProductCard
+                    key={index}
+                    product={product}
+                    loginState={loginState}
+                    onLoginState={onLoginState}
+                  />
                 ))}
               </section>
             </div>
