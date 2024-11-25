@@ -77,10 +77,10 @@ app.post('/register', async_wrapper(get_users_register));
 app.post('/authT',  async_wrapper(verifyToken));
 
 //ENDPOINT TO ADD FAVORITE
-app.post('/favoritos', async_wrapper(add_favorite));
+app.post('/favoritos/add', async_wrapper(add_favorite));
 
 //ENDPOINT TO REMOVE FAVORITE
-app.delete('/favoritos', async_wrapper(remove_favorite));
+app.delete('/favoritos/remove', async_wrapper(remove_favorite));
 
 //ENDPOINT TO FAVORITES BY USER
 app.get('/favoritos/:id_usuario', async_wrapper(get_favorites_by_user));

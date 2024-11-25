@@ -23,6 +23,27 @@ const ProductCard = ({ product, loginState, onLoginState }) => {
     if (!token) {
       setUserId(null);
       setShowLogin(true);
+    } else {
+      setIsFavorite(!isFavorite);
+      if (isFavorite) {
+        await fetch_data(
+          '/favoritos/add',
+          null,
+          {
+            id_usuario_favorito: userId,
+            id_producto_favorito: product.id
+          }
+        )
+      } else {
+        await fetch_data(
+          '/favoritos/remove',
+          null,
+          {
+            id_usuario_favorito: userId,
+            id_producto_favorito: product.id
+          }
+        )
+      }
     }
   }
 
