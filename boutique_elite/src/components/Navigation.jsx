@@ -6,7 +6,7 @@ import logo from "../assets/logo_white.png";
 import Login from './Login';
 import fetch_data from '../api/api_backend';
 
-function Navigation({ categories, onSearchChange, onCategorySelect }) {
+function Navigation({ categories, onSearchChange, onCategorySelect, loginState }) {
   const [searchText, setSearchText] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
   const [showLogin, setShowLogin] = useState(false); // Estado para manejar el modal de login
@@ -28,12 +28,14 @@ function Navigation({ categories, onSearchChange, onCategorySelect }) {
     localStorage.setItem('token', data.token); // Guarda el token en el almacenamiento local
     console.log('[INFO] Token almacenado:', data.token);
     setShowLogin(false); // Cierra el modal
+    loginState(true); // Cambia el estado de login
   };
 
   const handleLogout = () => {
     setUser(null); // Borra el usuario autenticado
     localStorage.removeItem('token'); // Borra el token del almacenamiento local
     console.log('[INFO] Usuario cerró sesión');
+    loginState(false); // Cambia el estado de login
   };
 
   const handleFavoritesClick = () => {
@@ -53,14 +55,17 @@ function Navigation({ categories, onSearchChange, onCategorySelect }) {
         (data) => {
           setUser(data.user); // Guarda los datos del usuario autenticado
           console.log('[INFO] Usuario autenticado:', data.user);
+          loginState(true); // Cambia el estado de login
         },
         { token }
       ).catch((err) => {
         console.error('[ERROR] Token inválido:', err);
         localStorage.removeItem('token'); // Borra el token del almacenamiento local
+        loginState(false); // Cambia el estado de login
       })
     } else {
       console.log('[INFO] No hay token almacenado');
+      loginState(false); // Cambia el estado de login
     }
   }, []);
 

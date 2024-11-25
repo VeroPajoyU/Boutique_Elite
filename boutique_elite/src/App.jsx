@@ -21,6 +21,7 @@ function App() {
   const [maxPrice, setMaxPrice] = useState(100000);
   // const [favorites, setFavorites] = useState([]); // Estado para manejar los favoritos
   const [searchText, setSearchText] = useState('');
+  const [userLogin, setUserLogin] = useState(false);
 
   useEffect(() => {
     fetch_data("/products", setProducts);
@@ -94,6 +95,7 @@ function App() {
   };
   // const handleFavoritesChange = (newFavorites) => { setFavorites(newFavorites); };
   const handleSearchChange = (searchText) => { setSearchText(searchText); console.log('Handle: '+searchText) };
+  const handleUserLogin = (login) => { setUserLogin(login);};
 
   return (
     <Router>
@@ -102,6 +104,7 @@ function App() {
           categories={categories}
           onSearchChange={handleSearchChange}
           onCategorySelect={handleCategorySelect}
+          loginState={userLogin}
         />
       </header>
       <main>
