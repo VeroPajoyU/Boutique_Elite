@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom"; // Importa Router y Routes
 import Navigation from "./components/Navigation.jsx";
 import Products from "./components/Products.jsx";
-// import Favorites from "./components/Favorites.jsx"; // Importa el componente de favoritos
+import Favorites from "./components/Favorites.jsx";
 import fetch_data from "./api/api_backend.jsx";
 
 function App() {
@@ -19,7 +19,7 @@ function App() {
   const [selectedColorsIds, setSelectedColorsIds] = useState([]);
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(100000);
-  // const [favorites, setFavorites] = useState([]); // Estado para manejar los favoritos
+  const [favorites, setFavorites] = useState([]);
   const [searchText, setSearchText] = useState('');
   const [userLogin, setUserLogin] = useState(false);
 
@@ -93,7 +93,7 @@ function App() {
     setMinPrice(min);
     setMaxPrice(max);
   };
-  // const handleFavoritesChange = (newFavorites) => { setFavorites(newFavorites); };
+  const handleFavoritesChange = (newFavorites) => { setFavorites(newFavorites); };
   const handleSearchChange = (searchText) => { setSearchText(searchText); };
   const handleUserLogin = (login) => { setUserLogin(login); };
 
@@ -122,9 +122,15 @@ function App() {
               onColorsSelect={handleColorSelect} 
               onPriceSelect={handlePriceSelect}
               onLoginState={handleUserLogin}
+              onFavoritesChange={handleFavoritesChange}
             />
           } />
-          {/* <Route path="/favoritos" element={<Favorites favorites={favorites} />} /> Ruta para la página de favoritos */}
+          <Route path="/favoritos" element={
+            <Favorites 
+              favorites={favorites} 
+              userId={userLogin ? 1 : null}
+            />
+          } />
         </Routes>
       </main>
     </Router>

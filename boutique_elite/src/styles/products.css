@@ -1,0 +1,68 @@
+/* Filtros */
+.filters-text {
+    max-height: 80vh;
+    overflow-y: auto;
+    font-size: 1rem;
+  }
+  
+  @media (max-width: 768px) {
+    .filters-text {
+      font-size: 0.9rem;
+    }
+  }
+  
+  @media (max-width: 576px) {
+    .filters-text {
+      font-size: 0.8rem;
+    }
+  }
+  
+  @media (max-width: 320px) {
+    .filters-text {
+      font-size: 0.7rem; /* Ajusta aún más el tamaño de la fuente */
+    }
+  }
+  
+  /* Ajustes de la tarjeta de producto */
+  .product-card {
+    width: 18rem; /* Establece un tamaño base para las tarjetas */
+  }
+  
+  @media (max-width: 768px) {
+    .product-card {
+      width: 16rem; /* Reduce el tamaño en pantallas medianas */
+    }
+  }
+  
+  @media (max-width: 576px) {
+    .product-card {
+      width: 14rem; /* Reduce aún más el tamaño en pantallas pequeñas */
+    }
+  }
+  
+  @media (max-width: 320px) {
+    .product-card {
+      width: 12rem; /* Ajusta aún más el tamaño de las tarjetas para pantallas muy pequeñas */
+    }
+  }
+  
+  /* Columna de filtros - Manejo en pantallas pequeñas */
+  @media (max-width: 768px) {
+    .filters-col {
+      display: none; /* Ocultar filtros en pantallas pequeñas */
+    }
+  
+    .show-filters-btn {
+      display: block; /* Mostrar el botón para alternar filtros */
+    }
+  }
+  
+  @media (min-width: 768px) {
+    .filters-col {
+      display: block; /* Mostrar filtros en pantallas grandes */
+    }
+  
+    .show-filters-btn {
+      display: none; /* Ocultar el botón de filtros en pantallas grandes */
+    }
+  }  

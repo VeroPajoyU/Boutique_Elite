@@ -77,7 +77,7 @@ function Navigation({ categories, onSearchChange, onCategorySelect, loginState }
     <>
       <Navbar bg="light" expand="lg" className="py-3 sticky-top">
         <Navbar.Brand>
-          <img src={logo} alt="Boutique" width={270} height={40} />
+          <img src={logo} alt="Boutique" width={40} height={40} style={{ marginLeft: '10px' }}  />
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
@@ -106,7 +106,7 @@ function Navigation({ categories, onSearchChange, onCategorySelect, loginState }
               <div style={{ display: "flex", alignItems: "center", marginRight: "10px" }}>
                 {user ? (
                   <>
-                    <span style={{ fontSize: "12px", color: "gray", fontWeight: "bold", textAlign: "center" }}>
+                    <span style={{ fontSize: "12px", color: "gray", fontWeight: "bold", textAlign: "center", maxWidth: "90px", whiteSpace: "normal", overflowWrap: "break-word", lineHeight: "0.9" }}>
                       ¡Hola, {user ? user : 'Usuario'}!
                     </span>
                     <FaSignOutAlt

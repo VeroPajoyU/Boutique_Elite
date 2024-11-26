@@ -26,15 +26,7 @@ const ProductCard = ({ product, loginState, onLoginState }) => {
     } else {
       setIsFavorite(!isFavorite);
       if (isFavorite) {
-        await fetch_data(
-          '/favoritos/add',
-          null,
-          {
-            id_usuario_favorito: userId,
-            id_producto_favorito: product.id
-          }
-        )
-      } else {
+        // Llama al endpoint de eliminar favorito
         await fetch_data(
           '/favoritos/remove',
           null,
@@ -42,7 +34,17 @@ const ProductCard = ({ product, loginState, onLoginState }) => {
             id_usuario_favorito: userId,
             id_producto_favorito: product.id
           }
-        )
+        );
+      } else {
+        // Llama al endpoint de agregar favorito
+        await fetch_data(
+          '/favoritos/add',
+          null,
+          {
+            id_usuario_favorito: userId,
+            id_producto_favorito: product.id
+          }
+        );
       }
     }
   }
