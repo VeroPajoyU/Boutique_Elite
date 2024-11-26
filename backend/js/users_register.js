@@ -19,7 +19,6 @@ const get_users_register = async (req) => {
             id_rol_usuario || 2 // Asignar rol predeterminado
         );
 
-        console.log('[INFO] Usuario registrado:', newUser.login_usuario);
         return newUser; // Devolver usuario registrado para que async_wrapper maneje la respuesta
     } catch (error) {
         console.error('[ERROR]', error.message);

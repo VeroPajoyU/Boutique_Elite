@@ -1,39 +1,34 @@
 import { useEffect, useState } from "react";
 import fetch_data from '../api/api_backend.jsx';
 import ProductCard from "./ProductCard.jsx";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
-const Favorites = ({ userId }) => {
-    const [favorites, setFavorites] = useState([]);
+const Favorites = () => {
+    
+    const location = useLocation();
     const navigate = useNavigate();
+    const userId = location.state?.userId;
+    const [favorites, setFavorites] = useState([]);
 
     useEffect(() => {
-        if (!userId) {
-            alert("Por favor, inicia sesión para ver tus favoritos.");
-            navigate("/");
-            return;
-        }
-
-        fetch_data("/favoritos/" + userId, setFavorites);
-    }, [userId]);
+        fetch_data(`/favoritos/` + userId, setFavorites);
+        console.log(favorites);
+    }, [userId, navigate]);
 
     const handleFavoriteToggle = async (productId) => {
         const isFavorite = favorites.some((fav) => fav.id === productId);
-        const action = isFavorite ? "REMOVE_FAVORITE" : "ADD_FAVORITE";
-
-        // Llama al endpoint correcto para agregar o eliminar un favorito
+    
         await fetch_data("/favoritos/" + (isFavorite ? "remove" : "add"), null, {
-            id_usuario_favorito: userId,
-            id_producto_favorito: productId,
+          id_usuario_favorito: userId,
+          id_producto_favorito: productId,
         });
-
-        // Actualiza el estado de favoritos después de agregar/eliminar
+    
         setFavorites((prevFavorites) =>
-            isFavorite
-                ? prevFavorites.filter((fav) => fav.id !== productId)
-                : [...prevFavorites, { id: productId }]
+          isFavorite
+            ? prevFavorites.filter((fav) => fav.id !== productId)
+            : [...prevFavorites, { id: productId }]
         );
-    };
+      };
 
     return (
         <div className="container mt-4">

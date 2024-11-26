@@ -17,19 +17,21 @@ export const remove_favorite = async (req) => {
 };
 
 // Obtener productos favoritos de un usuario
-export const get_favorites_by_user = async (req) => {
-    const { id_usuario } = req.params;
+export const get_favorites_by_user = async (req, res, id) => {
+    console.log(id);
     const query = `
         SELECT 
             p.id_producto AS id, 
             p.nombre_producto AS product, 
             p.descripcion_producto AS description, 
             p.costo_producto AS price, 
-            f.ruta_foto
+            rf.ruta_foto
         FROM favoritos f
         JOIN productos p ON f.id_producto_favorito = p.id_producto
+        JOIN fotos rf ON rf.id_producto_foto = p.id_producto
         WHERE f.id_usuario_favorito = ?`;
-    const [results] = await connection.query(query, [id_usuario]);
+    const [results] = await connection.query(query, [id]);
+    console.log(results)
     return results;
 };
 

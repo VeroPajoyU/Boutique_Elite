@@ -80,10 +80,10 @@ app.post('/authT',  async_wrapper(verifyToken));
 app.post('/favoritos/add', async_wrapper(add_favorite));
 
 //ENDPOINT TO REMOVE FAVORITE
-app.delete('/favoritos/remove', async_wrapper(remove_favorite));
+app.post('/favoritos/remove', async_wrapper(remove_favorite));
 
 //ENDPOINT TO FAVORITES BY USER
-app.get('/favoritos/:id_usuario', async_wrapper(get_favorites_by_user));
+app.post('/favoritos/:id', async_wrapper(get_favorites_by_user));
 
 // Configuración del servidor para escuchar en el puerto especificado en process.env.PORT 
 // o en el puerto 3000 por defecto, y muestra un mensaje en la consola al iniciar.

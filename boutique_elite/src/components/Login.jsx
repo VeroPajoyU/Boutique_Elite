@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import fetch_data from '../api/api_backend.jsx';
 
-const Login = ({ show, handleClose, handleLogin }) => {
+const Login = ({ show, onLogin, onClose }) => {
     const [login_usuario, setLoginUsuario] = useState('');
     const [password_usuario, setPasswordUsuario] = useState('');
     const [nombre_usuario, setNombreUsuario] = useState('');
@@ -20,8 +20,8 @@ const Login = ({ show, handleClose, handleLogin }) => {
             await fetch_data(
                 '/login',
                 (data) => {
-                    handleLogin(data);
-                    handleClose();
+                    onLogin(data);
+                    onClose();
                 },
                 { login_usuario, password_usuario }
             );
@@ -37,8 +37,8 @@ const Login = ({ show, handleClose, handleLogin }) => {
             await fetch_data(
                 '/register',
                 (user) => {
-                    handleLogin(user);
-                    handleClose();
+                    onLogin(user);
+                    onClose();
                 },
                 { login_usuario, password_usuario, nombre_usuario, email_usuario, celular_usuario }
             );
@@ -48,7 +48,7 @@ const Login = ({ show, handleClose, handleLogin }) => {
     };
 
     return (
-        <Modal show={show} onHide={handleClose} centered>
+        <Modal show={show} onHide={onClose} centered>
             <Modal.Header closeButton>
                 <div className="w-100 text-center">
                     <Modal.Title>{isRegistering ? 'Registrarse' : 'Iniciar Sesión'}</Modal.Title>

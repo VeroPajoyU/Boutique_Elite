@@ -9,7 +9,6 @@ const authenticateUser = async (login_usuario, password_usuario) => {
     if (results.length === 0) {
         throw new Error('Usuario no encontrado');
     }
-    console.log('Usuario: ', results);
 
     const user = results[0];
 
@@ -18,7 +17,6 @@ const authenticateUser = async (login_usuario, password_usuario) => {
     if (!isMatch) {
         throw new Error('Contraseña incorrecta');
     }
-    console.log('Contraseña correcta');
 
     // Retorna el usuario sin la contraseña
     const { password_usuario: userPassword, ...userWithoutPassword } = user;

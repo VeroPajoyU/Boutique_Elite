@@ -23,7 +23,6 @@ const verifyToken = (req) => {
     const { token } = req.body;
     try {
         const result = jwt.verify(token, SECRET_KEY);
-        console.log(result);
         return { id: result.id_usuario, name: result.nombre_usuario }; // Retorna un objeto con los datos del usuario
     } catch (error) {
         console.error('Token verification failed:', error.message);

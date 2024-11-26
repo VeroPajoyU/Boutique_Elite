@@ -6,16 +6,12 @@ const get_users_login = async (req) => {
 
     try {
         const user = await authenticateUser(login_usuario, password_usuario);
-        console.log('[INFO] Usuario autenticado:',user);
         const id = user.id_usuario;
-        console.log('[INFO] ID de usuario:', id);
         const name = user.nombre_usuario;
-        console.log('[INFO] Nombre de usuario:', name);
         const token = generateToken({
             id_usuario: id,
             nombre_usuario: name 
         });
-        console.log('[INFO] Token generado:', token);
         // Return the user and token
         return { id, name, token };
     } catch (error) {

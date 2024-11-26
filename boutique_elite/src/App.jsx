@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom"; // Im
 import Navigation from "./components/Navigation.jsx";
 import Products from "./components/Products.jsx";
 import Favorites from "./components/Favorites.jsx";
+import Login from "./components/Login.jsx";
 import fetch_data from "./api/api_backend.jsx";
 
 function App() {
@@ -21,7 +22,9 @@ function App() {
   const [maxPrice, setMaxPrice] = useState(100000);
   const [favorites, setFavorites] = useState([]);
   const [searchText, setSearchText] = useState('');
-  const [userLogin, setUserLogin] = useState(false);
+  const [showLogin, setShowLogin] = useState(false);
+  const [userName, setUserName] = useState(null);
+  const [userId, setUserId] = useState(null);
 
   useEffect(() => {
     fetch_data("/products", setProducts);
@@ -80,10 +83,27 @@ function App() {
     if (searchText==''){
       fetch_data("/products", setProducts);
     } else {
-      console.log(searchText)
       fetch_data("/products/search", setProducts, { searchText }); // Enviar el texto de búsqueda en el cuerpo
     }
   }, [searchText]);
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      fetch_data(
+        '/authT',
+        (data) => {
+          setUserName(data.name);
+          setUserId(data.id);
+        },
+        { token }
+      ).catch(() => {
+        setUserName(null);
+        setUserId(null);
+        localStorage.removeItem('token');
+      })
+    }
+  }, setUserName, setUserId);
 
   const handleCategorySelect = (categoryId) => { setSelectedCategoryId(categoryId) };
   const handleMarkSelect = (markIds) => { setSelectedMarksIds(markIds) };
@@ -95,45 +115,64 @@ function App() {
   };
   const handleFavoritesChange = (newFavorites) => { setFavorites(newFavorites); };
   const handleSearchChange = (searchText) => { setSearchText(searchText); };
-  const handleUserLogin = (login) => { setUserLogin(login); };
+  const handleShowLogin = (showLogin) => { setShowLogin(showLogin); };
+  const handleLogin = (data) => {
+    setUserName(data.name);
+    setUserId(data.id);
+    localStorage.setItem('token', data.token);
+    setShowLogin(false);
+  }
+  const handleLogout = () => {
+    setUserName(null);
+    setUserId(null);
+    localStorage.removeItem('token');
+  }
 
   return (
-    <Router>
-      <header className="sticky-top">
-        <Navigation
-          categories={categories}
-          onSearchChange={handleSearchChange}
-          onCategorySelect={handleCategorySelect}
-          loginState={handleUserLogin}
-        />
-      </header>
-      <main>
-        <Routes>
-          <Route path="/" element={
-            <Products 
-              products={products}
-              marks={marks} 
-              sizes={sizes} 
-              colors={colors} 
-              prices={mmPrices}
-              loginState={userLogin}
-              onMarksSelect={handleMarkSelect} 
-              onSizesSelect={handleSizeSelect} 
-              onColorsSelect={handleColorSelect} 
-              onPriceSelect={handlePriceSelect}
-              onLoginState={handleUserLogin}
-              onFavoritesChange={handleFavoritesChange}
-            />
-          } />
-          <Route path="/favoritos" element={
-            <Favorites 
-              favorites={favorites} 
-              userId={userLogin ? 1 : null}
-            />
-          } />
-        </Routes>
-      </main>
-    </Router>
+    <>
+      <Router>
+        <header className="sticky-top">
+          <Navigation
+            categories={categories}
+            user={userName}
+            onSearchChange={handleSearchChange}
+            onCategorySelect={handleCategorySelect}
+            onLogin={handleShowLogin}
+            onLogout={handleLogout}
+          />
+        </header>
+        <main>
+          <Routes>
+            <Route path="/" element={
+              <Products 
+                products={products}
+                marks={marks} 
+                sizes={sizes} 
+                colors={colors} 
+                prices={mmPrices}
+                userId={userId}
+                onMarksSelect={handleMarkSelect} 
+                onSizesSelect={handleSizeSelect} 
+                onColorsSelect={handleColorSelect} 
+                onPriceSelect={handlePriceSelect}
+                onLogin={handleShowLogin}
+                // onFavoritesChange={handleFavoritesChange}
+              />
+            } />
+            <Route path="/favoritos" element={
+              <Favorites 
+                favorites={favorites}
+              />
+            } />
+          </Routes>
+        </main>
+      </Router>
+      <Login
+        show={showLogin}
+        onLogin={handleLogin}
+        onClose={() => setShowLogin(false)}
+      />
+    </>
   );
 }
 
