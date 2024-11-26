@@ -14,41 +14,12 @@ const ProductCard = ({ product, userId, onLogin }) => {
       onLogin(true);
     } else {
       setIsFavorite(!isFavorite);
+      if (isFavorite) {
+        fetch_data('/favoritos/remove', ()=>{}, { id_usuario_favorito: userId, id_producto_favorito: product.id });
+      } else {
+        fetch_data('/favoritos/add', ()=>{}, { id_usuario_favorito: userId, id_producto_favorito: product.id });
+      }
     }
-    // const token = localStorage.getItem('token');
-    // if (!token) {
-    //   setUserId(null);
-    //   setShowLogin(true);
-    // } else {
-    //   setIsFavorite(!isFavorite);
-    //   if (isFavorite) {
-    //     console.log('[INFO] Eliminando de favoritos:', product.id);
-    //     // Llama al endpoint de eliminar favorito
-    //     await fetch_data(
-    //       '/favoritos/remove',
-    //       (result) => {
-    //         console.log(result.message);
-    //       },
-    //       {
-    //         id_usuario_favorito: userId,
-    //         id_producto_favorito: product.id
-    //       }
-    //     );
-    //   } else {
-    //     console.log('[INFO] Agregando a favoritos:', product.id);
-    //     // Llama al endpoint de agregar favorito
-    //     await fetch_data(
-    //       '/favoritos/add',
-    //       (result) => {
-    //         console.log(result.message)
-    //       },
-    //       {
-    //         id_usuario_favorito: userId,
-    //         id_producto_favorito: product.id
-    //       }
-    //     );
-    //   }
-    // }
   }
 
   // Verifica si la ruta de la imagen es válida y construye la ruta completa de la imagen
