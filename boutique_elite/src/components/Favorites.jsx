@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import ProductCard from "./ProductCard";
+import { useNavigate } from "react-router-dom";
 
 function Favorites({ favorites, userId, favoritesIds, onLogin, onFavoriteToggle }) {
     const[localFavorites, setLocalFavorites] = useState(favorites);
+    const navigate = useNavigate();
 
     useEffect(() => {
         setLocalFavorites(favorites);
@@ -12,6 +14,12 @@ function Favorites({ favorites, userId, favoritesIds, onLogin, onFavoriteToggle 
         setLocalFavorites(localFavorites.filter(product => product.id !== productId));
         onFavoriteToggle(productId);
     };
+
+    useEffect(() => {
+        if (!userId) {
+            navigate("/");
+        }
+    }, [userId, navigate]);
 
     return (
         <div className="container mt-4">

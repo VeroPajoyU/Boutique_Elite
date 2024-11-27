@@ -1,13 +1,15 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Navbar, Nav, Form, FormControl, Button } from 'react-bootstrap';
-import { FaUser, FaSignOutAlt, FaShoppingCart, FaHeart } from "react-icons/fa";
-import { useNavigate } from 'react-router-dom'; // Cambiado useHistory por useNavigate
+import { FaUser, FaSignOutAlt, FaShoppingCart, FaHeart, FaHome } from "react-icons/fa";
+import { useLocation, useNavigate } from 'react-router-dom'; // Cambiado useHistory por useNavigate
 import logo from "../assets/logo_white.png";
 
 function Navigation({ categories, user, onSearchChange, onCategorySelect, onLogin, onLogout }) {
   const [searchText, setSearchText] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
+  const [isFavoritesPage, setIsFavoritesPage] = useState(false);
   const navigate = useNavigate(); // Para redirigir a diferentes rutas
+  const location = useLocation(); // Para obtener la ruta actual
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -30,9 +32,23 @@ function Navigation({ categories, user, onSearchChange, onCategorySelect, onLogi
     if (!user) {
       handleLogin(true); // Si no está logueado, muestra el modal de login
     } else {
+      setIsFavoritesPage(true);
       navigate("/favoritos"); // Si está logueado, redirige a favoritos
     }
   };
+
+  const handleHomeClick = () => {
+    setIsFavoritesPage(false);
+    navigate("/");
+  }
+
+  useEffect(() => {
+    if (location.pathname === '/favoritos') {
+      setIsFavoritesPage(true);
+    } else {
+      setIsFavoritesPage(false);
+    }
+  }, [location.pathname]);
 
   return (
     <Navbar bg="light" expand="lg" className="py-3 sticky-top">
@@ -88,7 +104,23 @@ function Navigation({ categories, user, onSearchChange, onCategorySelect, onLogi
               )}
             </div>
             <FaShoppingCart size={30} color="green" title="Añadir al carrito" style={{ marginRight: "10px" }} />
-            <FaHeart size={30} color="red" title="Ir a Favoritos" onClick={handleFavoritesClick} />
+            {isFavoritesPage ? (
+              <FaHome
+                size={30}
+                color='blue'
+                title='Ir a la página principal'
+                style={{ cursor: 'pointer' }}
+                onClick={handleHomeClick}
+              />
+            ) : (
+              <FaHeart
+                size={30}
+                color='red'
+                title='Ir a Favoritos'
+                style={{ cursor: 'pointer' }}
+                onClick={handleFavoritesClick}
+              />
+            )}
           </div>
         </Form>
       </Navbar.Collapse>
