@@ -8,7 +8,7 @@ import PriceFilter from "./PriceFilter";
 import logo from "../assets/logo_white_all.png";
 import fetch_data from "../api/api_backend.jsx";
 
-function Products({ products, marks, sizes, colors, prices, userId, onMarksSelect, onSizesSelect, onColorsSelect, onPriceSelect, onLogin }) {
+function Products({ products, marks, sizes, colors, prices, userId, favoritesIds, onMarksSelect, onSizesSelect, onColorsSelect, onPriceSelect, onLogin }) {
   const [selectedMarksIds, setSelectedMarksIds] = useState([]);
   const [selectedSizesIds, setSelectedSizesIds] = useState([]);
   const [selectedColorsIds, setSelectedColorsIds] = useState([]);
@@ -85,6 +85,7 @@ function Products({ products, marks, sizes, colors, prices, userId, onMarksSelec
                     key={index}
                     product={product}
                     userId={userId}
+                    favoritesIds={favoritesIds}
                     onLogin={onLogin}
                   />
                 ))}

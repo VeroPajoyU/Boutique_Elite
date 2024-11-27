@@ -23,7 +23,12 @@ import {
 import get_users_login from './js/users_login.js';
 import get_users_register from './js/users_register.js';
 import { verifyToken } from './js/token_authentication.js';
-import { add_favorite, remove_favorite, get_favorites_by_user } from './js/favorites.js';
+import {
+  add_favorite,
+  remove_favorite,
+  get_favorite_ids_by_user,
+  get_favorites_by_user
+} from './js/favorites.js';
 
 // Crea una aplicación Express (app) y habilita CORS para permitir solicitudes desde diferentes orígenes. 
 // Configura la aplicación para que acepte datos JSON.
@@ -81,6 +86,9 @@ app.post('/favoritos/add', async_wrapper(add_favorite));
 
 //ENDPOINT TO REMOVE FAVORITE
 app.post('/favoritos/remove', async_wrapper(remove_favorite));
+
+// ENDPOINT TO FAVORITES IDS BY USER
+app.post('/favoritos/ids/:id', async_wrapper(get_favorite_ids_by_user));
 
 //ENDPOINT TO FAVORITES BY USER
 app.post('/favoritos/:id', async_wrapper(get_favorites_by_user));

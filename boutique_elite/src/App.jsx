@@ -21,6 +21,7 @@ function App() {
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(100000);
   const [favorites, setFavorites] = useState([]);
+  const [favoritesIds, setFavoritesIds] = useState([]);
   const [searchText, setSearchText] = useState('');
   const [showLogin, setShowLogin] = useState(false);
   const [userName, setUserName] = useState(null);
@@ -95,6 +96,9 @@ function App() {
         (data) => {
           setUserName(data.name);
           setUserId(data.id);
+
+          // Obtener los identificadores de productos favoritos después de iniciar sesión
+          fetch_data('/favoritos/ids/' + data.id, setFavoritesIds);
         },
         { token }
       ).catch(() => {
@@ -121,11 +125,17 @@ function App() {
     setUserId(data.id);
     localStorage.setItem('token', data.token);
     setShowLogin(false);
+
+    // Obtener los identificadores de productos favoritos después de iniciar sesión
+    fetch_data('/favoritos/ids/' + data.id, setFavoritesIds);
   }
   const handleLogout = () => {
     setUserName(null);
     setUserId(null);
     localStorage.removeItem('token');
+
+    // Limpiar la lista de identificadores de productos favoritos al cerrar sesión
+    setFavoritesIds([]);
   }
 
   return (
@@ -151,6 +161,7 @@ function App() {
                 colors={colors} 
                 prices={mmPrices}
                 userId={userId}
+                favoritesIds={favoritesIds}
                 onMarksSelect={handleMarkSelect} 
                 onSizesSelect={handleSizeSelect} 
                 onColorsSelect={handleColorSelect} 

@@ -2,12 +2,17 @@ import { useState, useEffect } from "react";
 import { Card } from "react-bootstrap";
 import { FaRegEye, FaShoppingCart, FaHeart } from "react-icons/fa";
 import fetch_data from "../api/api_backend.jsx";
-import Login from './Login';
 
-// const ProductCard = ({ product, userId, onFavoriteToggle }) => {
-// const ProductCard = ({ product, loginState, onLoginState, isFavorite: initialIsFavorite }) => {
-const ProductCard = ({ product, userId, onLogin }) => {
+const ProductCard = ({ product, userId, favoritesIds, onLogin }) => {
   const [isFavorite, setIsFavorite] = useState(false);
+
+  useEffect(() => {
+    if (favoritesIds.includes(product.id)) {
+      setIsFavorite(true);
+    } else {
+      setIsFavorite(false);
+    }
+  }, [favoritesIds, product.id]);
 
   const handleFavoriteToggle = async () => {
     if (!userId) {

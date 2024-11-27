@@ -16,6 +16,17 @@ export const remove_favorite = async (req) => {
     return { message: 'Producto eliminado de favoritos' };
 };
 
+// Obtener los ids de los productos favoritos de un usuario
+export const get_favorite_ids_by_user = async (req, res, id) => {
+    const query = `
+        SELECT 
+            id_producto_favorito AS id
+        FROM favoritos
+        WHERE id_usuario_favorito = ?`;
+    const [results] = await connection.query(query, [id]);
+    return results.map(result => result.id);
+};
+
 // Obtener productos favoritos de un usuario
 export const get_favorites_by_user = async (req, res, id) => {
     console.log(id);
@@ -35,4 +46,9 @@ export const get_favorites_by_user = async (req, res, id) => {
     return results;
 };
 
-export default {add_favorite, remove_favorite, get_favorites_by_user};
+export default {
+    add_favorite,
+    remove_favorite,
+    get_favorite_ids_by_user,
+    get_favorites_by_user
+};
