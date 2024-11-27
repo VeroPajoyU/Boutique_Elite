@@ -99,11 +99,10 @@ function App() {
 
           // Obtener los identificadores de productos favoritos después de iniciar sesión
           fetch_data('/favoritos/ids/' + data.id, setFavoritesIds);
+          fetch_data('/favoritos/' + data.id, setFavorites);
         },
         { token }
       ).catch(() => {
-        setUserName(null);
-        setUserId(null);
         localStorage.removeItem('token');
       })
     }
@@ -117,7 +116,6 @@ function App() {
     setMinPrice(min);
     setMaxPrice(max);
   };
-  const handleFavoritesChange = (newFavorites) => { setFavorites(newFavorites); };
   const handleSearchChange = (searchText) => { setSearchText(searchText); };
   const handleShowLogin = (showLogin) => { setShowLogin(showLogin); };
   const handleLogin = (data) => {
@@ -128,6 +126,7 @@ function App() {
 
     // Obtener los identificadores de productos favoritos después de iniciar sesión
     fetch_data('/favoritos/ids/' + data.id, setFavoritesIds);
+    fetch_data('/favoritos/' + data.id, setFavorites);
   }
   const handleLogout = () => {
     setUserName(null);
@@ -136,6 +135,7 @@ function App() {
 
     // Limpiar la lista de identificadores de productos favoritos al cerrar sesión
     setFavoritesIds([]);
+    setFavorites([]);
   }
 
   return (
@@ -173,6 +173,9 @@ function App() {
             <Route path="/favoritos" element={
               <Favorites 
                 favorites={favorites}
+                userId={userId}
+                favoritesIds={favoritesIds}
+                onLogin={handleShowLogin}
               />
             } />
           </Routes>

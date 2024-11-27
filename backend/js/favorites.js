@@ -29,7 +29,6 @@ export const get_favorite_ids_by_user = async (req, res, id) => {
 
 // Obtener productos favoritos de un usuario
 export const get_favorites_by_user = async (req, res, id) => {
-    console.log(id);
     const query = `
         SELECT 
             p.id_producto AS id, 
@@ -42,7 +41,6 @@ export const get_favorites_by_user = async (req, res, id) => {
         JOIN fotos rf ON rf.id_producto_foto = p.id_producto
         WHERE f.id_usuario_favorito = ?`;
     const [results] = await connection.query(query, [id]);
-    console.log(results)
     return results;
 };
 
