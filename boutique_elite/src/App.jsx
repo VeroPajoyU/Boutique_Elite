@@ -137,6 +137,25 @@ function App() {
     setFavoritesIds([]);
     setFavorites([]);
   }
+  const handleFavoriteToggle = (productId) => {
+    setFavorites((prevFavorites) => {
+      const isFavorite = prevFavorites.some(product => product.id === productId);
+      if (isFavorite) {
+        return prevFavorites.filter(product => product.id !== productId);
+      } else {
+        const newFavorite = products.find(product => product.id === productId);
+        return [...prevFavorites, newFavorite];
+      }
+    });
+    setFavoritesIds((prevFavoritesIds) => {
+      const isFavorite = prevFavoritesIds.includes(productId);
+      if (isFavorite) {
+        return prevFavoritesIds.filter(id => id !== productId);
+      } else {
+        return [...prevFavoritesIds, productId];
+      }
+    });
+  }
 
   return (
     <>
@@ -167,7 +186,7 @@ function App() {
                 onColorsSelect={handleColorSelect} 
                 onPriceSelect={handlePriceSelect}
                 onLogin={handleShowLogin}
-                // onFavoritesChange={handleFavoritesChange}
+                onFavoriteToggle={handleFavoriteToggle}
               />
             } />
             <Route path="/favoritos" element={
@@ -176,6 +195,7 @@ function App() {
                 userId={userId}
                 favoritesIds={favoritesIds}
                 onLogin={handleShowLogin}
+                onFavoriteToggle={handleFavoriteToggle}
               />
             } />
           </Routes>

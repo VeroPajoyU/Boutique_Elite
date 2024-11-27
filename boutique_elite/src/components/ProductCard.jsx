@@ -3,7 +3,7 @@ import { Card } from "react-bootstrap";
 import { FaRegEye, FaShoppingCart, FaHeart } from "react-icons/fa";
 import fetch_data from "../api/api_backend.jsx";
 
-const ProductCard = ({ product, userId, favoritesIds, onLogin }) => {
+const ProductCard = ({ product, userId, favoritesIds, onLogin, onFavoriteToggle }) => {
   const [isFavorite, setIsFavorite] = useState(false);
 
   useEffect(() => {
@@ -20,9 +20,11 @@ const ProductCard = ({ product, userId, favoritesIds, onLogin }) => {
     } else {
       setIsFavorite(!isFavorite);
       if (isFavorite) {
-        fetch_data('/favoritos/remove', ()=>{}, { id_usuario_favorito: userId, id_producto_favorito: product.id });
+        await fetch_data('/favoritos/remove', () => {}, { id_usuario_favorito: userId, id_producto_favorito: product.id });
+        onFavoriteToggle(product.id);
       } else {
-        fetch_data('/favoritos/add', ()=>{}, { id_usuario_favorito: userId, id_producto_favorito: product.id });
+        await fetch_data('/favoritos/add', () => {}, { id_usuario_favorito: userId, id_producto_favorito: product.id });
+        onFavoriteToggle(product.id);
       }
     }
   }

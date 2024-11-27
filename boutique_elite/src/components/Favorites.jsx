@@ -1,6 +1,18 @@
+import { useEffect, useState } from "react";
 import ProductCard from "./ProductCard";
 
-function Favorites({ favorites, userId, favoritesIds, onLogin }) {
+function Favorites({ favorites, userId, favoritesIds, onLogin, onFavoriteToggle }) {
+    const[localFavorites, setLocalFavorites] = useState(favorites);
+
+    useEffect(() => {
+        setLocalFavorites(favorites);
+      }, [favorites]);
+
+    const handleFavoriteToggle = (productId) => {
+        setLocalFavorites(localFavorites.filter(product => product.id !== productId));
+        onFavoriteToggle(productId);
+    };
+
     return (
         <div className="container mt-4">
             <h2 className="text-center mb-4">Favoritos</h2>
@@ -15,6 +27,7 @@ function Favorites({ favorites, userId, favoritesIds, onLogin }) {
                                 userId={userId}
                                 favoritesIds={favoritesIds}
                                 onLogin={onLogin}
+                                onFavoriteToggle={handleFavoriteToggle}
                             />
                         </div>
                     ))}
